@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="/home/lestath/EclipseProjects/libs/webcam-capture-driver-jmf-0.3.10-RC7.jar"/>
 	<classpathentry kind="lib" path="/home/lestath/EclipseProjects/libs/webcam-capture-0.3.10.jar"/>
 	<classpathentry kind="lib" path="/home/lestath/EclipseProjects/libs/webcam-capture-0.3.10-RC3.jar"/>
+	<classpathentry kind="lib" path="/home/lestath/EclipseProjects/libs/imgscalr-lib-4.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
