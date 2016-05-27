@@ -24,7 +24,7 @@ public MainApp(){
 	  
 	  this.GRAPH = new Graph();
 	  this.setLayout(new FlowLayout(FlowLayout.LEADING));
-	  this.setSize(new Dimension(410,350));
+	  this.setSize(new Dimension(410,610));
 	  this.setLocationRelativeTo(null);
 	  this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  

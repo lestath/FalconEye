@@ -31,7 +31,8 @@ public class Graph extends JPanel implements Runnable{
     	this.H = 300;
     	web = Webcam.getDefault();
     	web.open();	
-		this.setPreferredSize(new Dimension(W,H));
+    	
+		this.setPreferredSize(new Dimension(300,600));
 		this.setVisible(true);
 		this.Running = true;
 		
@@ -41,21 +42,63 @@ public class Graph extends JPanel implements Runnable{
 	protected void paintComponent(Graphics g){
 		int rgb;
 		Graphics2D g2d =(Graphics2D) g;
+		Color c;
+		boolean[][] faceTable;
+
+				
+		faceTable = new boolean[W][H];
+		
+		for(int x =0;x<W;x++)
+			for(int y=0;y<H;y++)
+				faceTable[x][y] = false;
+		
 		IMG = web.getImage();
-		IMG = Scalr.resize(IMG,W,H,null);
-		g2d.drawImage(IMG, 0, 0,W,H,this);
+		IMG = Scalr.resize(IMG,W,H);
+		g2d.drawImage(IMG,0, 0,IMG.getWidth(),IMG.getHeight(),this);
+		g2d.setColor(Color.red);
 		for(int x=0;x<IMG.getWidth();x++){
-			for(int y =0; y<IMG.getHeight();y++){
+			for(int y =0; y<IMG.getHeight();y++){ 
 					rgb = IMG.getRGB(x, y);
-				//	System.out.println(rgb);
-					if(rgb >-16776432 && rgb <-16777186){
-						g2d.setColor(Color.red);
-						g2d.drawRect(x+10, y+10,10,10);
-						
-					}
-				}
+					c = new Color(rgb);
+					if((c.getRed() <= 200) && (c.getRed()>=150))
+					  if((c.getGreen() <= (c.getRed()*0.81))){
+						//  g2d.drawRect(x,y,1,1);
+						  faceTable[x][y] = true;
+					  }
 			}
+	
 		}
+		
+		for(int x =0;x<W;x++)
+			for(int y=0;y<H;y++)
+				if(faceTable[x][y]){
+					g2d.drawRect(x,y+H,1,1);
+				}else{
+					g2d.clearRect(x, y+H,1,1);
+				}
+		
+		int counter = 0;
+		for(int x =1;x<(W-1);x++)
+			for(int y=1;y<(H-1);y++)
+				if(faceTable[x][y]){
+					if(faceTable[x-1][y-1]){
+						if(faceTable[x+1][y-1]){
+							if(faceTable[x-1][y+1]){
+								if(faceTable[x-1][y+1]){
+									counter = counter +1;
+									if(counter > 30){
+										g2d.drawString("FACE",x,y);
+									}
+								}		
+							}	
+						}
+					}
+				}else{
+					counter = 0;
+				}
+
+		
+	}
 	
 	public void run(){
 		while(true){
@@ -63,7 +106,7 @@ public class Graph extends JPanel implements Runnable{
 					this.repaint();
 				}
 				try {
-					Thread.sleep(300);
+					Thread.sleep(10);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
